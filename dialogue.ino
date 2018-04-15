@@ -125,23 +125,22 @@ uint16_t dialogue_index;
 uint8_t dialogue_remaining;
 
 void step_dialogue(){
-  gb.display.setColor(WHITE);
-  gb.display.fillRect(0,SCREEN_HEIGHT/2-1,SCREEN_WIDTH,SCREEN_HEIGHT/2+1);
-  gb.display.setColor(BLACK);
-  gb.display.drawRect(0,SCREEN_HEIGHT/2-1,SCREEN_WIDTH,SCREEN_HEIGHT/2+1);
-  
-  gb.display.cursorX = 1;
-  gb.display.cursorY = SCREEN_HEIGHT/2;
+  //gb.display.setColor(WHITE);
+  gb.fillRect(0,SCREEN_HEIGHT/2-1,SCREEN_WIDTH,SCREEN_HEIGHT/2+1, WHITE);
+  //gb.display.setColor(BLACK);
+  gb.drawRect(0,SCREEN_HEIGHT/2-1,SCREEN_WIDTH,SCREEN_HEIGHT/2+1, BLACK);
+
+  gb.setCursor(1, SCREEN_HEIGHT/2);
   //If the first char is a zero, then no character is speaking, so skip this
   //so that narration gets four lines to work with
   if( combat_buffer[0] != 0 ){
-    gb.display.println(combat_buffer);//Display name of speaker, set before this
+    gb.println(combat_buffer);//Display name of speaker, set before this
   }
-  gb.display.cursorX = 4;
-  gb.display.print(combat_message);
+  gb.setCursor(4, gb.getCursorY());
+  gb.print(combat_message);
 
-  if(gb.buttons.pressed(BTN_A)){
-    gb.sound.playOK();
+  if(gb.justPressed(A_BUTTON)){
+    //gb.sound.playOK(); // TODO SOUND
     if( dialogue_remaining == 0 ){
       // If dialogue is done, return to world mode
       if( game_status[STATUS_MAIN] == 36 ){

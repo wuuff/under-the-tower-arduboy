@@ -387,7 +387,7 @@ void try_combat(){
     meta_mode = mode; //Remember the mode we came from
     mode = TO_COMBAT;
     transition = -SCREEN_HEIGHT/2;
-    gb.display.persistence = true;
+    persistence = true;
     next_combat = random(192)+64;//32-256 steps
   }
 }
@@ -659,13 +659,12 @@ void copy_action_to_msg_buffer(uint8_t source, uint8_t dest, uint16_t amount, ui
 }
 
 void draw_menu(byte index){
-  gb.display.cursorY = SCREEN_HEIGHT/2-6;
+  gb.setCursor(0, SCREEN_HEIGHT/2-6);
   uint8_t offset = 0;
   for(byte i = 0; i < 4; i++){
-    gb.display.cursorX = 1;
-    gb.display.cursorY+=6;
-    if( combat_selection == i ) gb.display.print(F("\20"));
-    gb.display.cursorX = 4;
+    gb.setCursor(1, gb.getCursorY() + 6);
+    if( combat_selection == i ) gb.print(F("\20"));
+    gb.setCursor(4, gb.getCursorY());
     combat_message[0] = '\0';//If we don't copy anything in, print nothing
     if( index <= SECONDARY_MENU ){
       offset = append_to_msg_buffer(index*4+i,menu_text,0);//Ordinary menus with fixed text
@@ -710,7 +709,7 @@ void draw_menu(byte index){
       }
     }
     combat_message[offset] = '\0';
-    gb.display.print(combat_message);
+    gb.print(combat_message);
   }
 }
 
@@ -770,35 +769,34 @@ void do_combat(){
   
   //Get enemy type
   //graphics hardcoded for now
-  gb.display.cursorY = 0;
+  gb.setCursor(0, 0);
 
   if(enemy_buffer[0].lvl != -1){
-    gb.display.cursorX = 0;
+    //gb.cursor_x = 0;
     copy_to_buffer(enemy_buffer[0].nme,enemy_names);
-    gb.display.print(combat_buffer);
-    gb.display.drawBitmap(SCREEN_WIDTH/4-4,SCREEN_HEIGHT/8,&enemybmps[enemy_buffer[0].img*18]);
+    gb.print(combat_buffer);
+    gb.drawSlowXYBitmap(SCREEN_WIDTH/4-4,SCREEN_HEIGHT/8,&enemybmps[enemy_buffer[0].img*18],8,16);
   }
   if(enemy_buffer[1].lvl != -1){
-    gb.display.cursorX = SCREEN_WIDTH/2-(3*4)-2;
+    gb.setCursor(SCREEN_WIDTH/2-(3*4)-2, 0);
     copy_to_buffer(enemy_buffer[1].nme,enemy_names);
-    gb.display.print(combat_buffer);
-    gb.display.drawBitmap(SCREEN_WIDTH/2-4,SCREEN_HEIGHT/8,&enemybmps[enemy_buffer[1].img*18]);
+    gb.print(combat_buffer);
+    gb.drawSlowXYBitmap(SCREEN_WIDTH/2-4,SCREEN_HEIGHT/8,&enemybmps[enemy_buffer[1].img*18],8,16);
   }
   if(enemy_buffer[2].lvl != -1){
-    gb.display.cursorX = SCREEN_WIDTH-(7*4);
+    gb.setCursor(SCREEN_WIDTH-(7*4), 0);
     copy_to_buffer(enemy_buffer[2].nme,enemy_names);
-    gb.display.print(combat_buffer);
-    gb.display.drawBitmap(SCREEN_WIDTH/4*3-4,SCREEN_HEIGHT/8,&enemybmps[enemy_buffer[2].img*18]);
+    gb.print(combat_buffer);
+    gb.drawSlowXYBitmap(SCREEN_WIDTH/4*3-4,SCREEN_HEIGHT/8,&enemybmps[enemy_buffer[2].img*18],8,16);
   }
 
   //If a message is displayed (dismissing the message steps combat forward)
   if( combat_mode == MESSAGE || combat_mode == VICTORY || combat_mode == DEFEAT ){
-     gb.display.cursorX = 4;
-     gb.display.cursorY = SCREEN_HEIGHT/2;
-     gb.display.print(combat_message);
-     if(gb.buttons.pressed(BTN_A)){
+     gb.setCursor(4, SCREEN_HEIGHT/2);
+     gb.print(combat_message);
+     if(gb.justPressed(A_BUTTON)){
         byte step_forward = 1;
-        gb.sound.playTick();
+        //gb.sound.playTick(); // TODO SOUND
         if( combat_mode == VICTORY ){
           //If there is more than one party member, ask who to give xp to
           if( party[SHADOW].level > 0 ){
@@ -847,37 +845,34 @@ void do_combat(){
   else if( (combat_mode >= MUDLARK && combat_mode <= NURSE) || combat_mode == POSTCOMBAT ){
 
     if( combat_mode >= MUDLARK && combat_mode <= NURSE ){
-      gb.display.drawRect(SCREEN_WIDTH/2, SCREEN_HEIGHT/2+1, SCREEN_WIDTH/2-2, 3);
-      gb.display.drawLine(SCREEN_WIDTH/2, SCREEN_HEIGHT/2+2, SCREEN_WIDTH/2+((SCREEN_WIDTH/2-4)*party[combat_mode].health)/(party[combat_mode].level*20), SCREEN_HEIGHT/2+2);
-      
-      gb.display.cursorX = SCREEN_WIDTH-33;//8*4+1
-      gb.display.cursorY = SCREEN_HEIGHT/2+6;
+      gb.drawRect(SCREEN_WIDTH/2, SCREEN_HEIGHT/2+1, SCREEN_WIDTH/2-2, 3,BLACK);
+      gb.drawLine(SCREEN_WIDTH/2, SCREEN_HEIGHT/2+2, SCREEN_WIDTH/2+((SCREEN_WIDTH/2-4)*party[combat_mode].health)/(party[combat_mode].level*20), SCREEN_HEIGHT/2+2,BLACK);
+
+      gb.setCursor(SCREEN_WIDTH-(8*4+1), SCREEN_HEIGHT/2+6);
       copy_to_buffer(combat_mode,player_names);
-      gb.display.print(combat_buffer);
-      gb.display.cursorX = SCREEN_WIDTH-33;//8*4+1
-      gb.display.cursorY = SCREEN_HEIGHT/2+12;
-      gb.display.print(party[combat_mode].health);
-      gb.display.print(F("/"));
-      gb.display.print(party[combat_mode].level*20);
-  
-      gb.display.cursorX = SCREEN_WIDTH-33;//8*4+1
-      gb.display.cursorY = SCREEN_HEIGHT/2+18;
-      gb.display.print(F("XP"));
-      gb.display.print(party[combat_mode].xp);
-      gb.display.print(F("L"));
-      gb.display.print(party[combat_mode].level);
+      gb.print(combat_buffer);
+      gb.setCursor(SCREEN_WIDTH-(8*4+1), SCREEN_HEIGHT/2+12);
+      gb.print(party[combat_mode].health);
+      gb.print(F("/"));
+      gb.print(party[combat_mode].level*20);
+
+      gb.setCursor(SCREEN_WIDTH-(8*4+1), SCREEN_HEIGHT/2+18);
+      gb.print(F("XP"));
+      gb.print(party[combat_mode].xp);
+      gb.print(F("L"));
+      gb.print(party[combat_mode].level);
     }
 
     draw_menu(menu_selection);
     
-    if(gb.buttons.pressed(BTN_UP)){
-      gb.sound.playTick();
+    if(gb.justPressed(UP_BUTTON)){
+      //gb.sound.playTick(); // TODO SOUND
       combat_selection--;
-    }else if(gb.buttons.pressed(BTN_DOWN)){
-      gb.sound.playTick();
+    }else if(gb.justPressed(DOWN_BUTTON)){
+      //gb.sound.playTick(); // TODO SOUND
       combat_selection++;
-    }else if(gb.buttons.pressed(BTN_A)){
-      gb.sound.playOK();
+    }else if(gb.justPressed(A_BUTTON)){
+      //gb.sound.playOK(); // TODO SOUND
       // Flail, Strike
       if( (menu_selection == MUDLARK_MENU || menu_selection == SHADOW_MENU) && combat_selection == 0){
         menu_selection = ENEMY_MENU;
@@ -1076,8 +1071,8 @@ void do_combat(){
         if( party[combat_mode].health > party[combat_mode].level*20 ) party[combat_mode].health = party[combat_mode].level*20;//Cap off healing
         combat_mode = MESSAGE;
       }
-    }else if(gb.buttons.pressed(BTN_B)){
-      gb.sound.playCancel();
+    }else if(gb.justPressed(B_BUTTON)){
+      //gb.sound.playCancel(); // TODO SOUND
       
 
 
@@ -1177,7 +1172,7 @@ void do_combat(){
     gb.display.print((char)(enemies[i]+'1'));
   }*/
 
-  gb.display.drawRect(0,SCREEN_HEIGHT/2-1,SCREEN_WIDTH,SCREEN_HEIGHT/2+1);
+  gb.drawRect(0,SCREEN_HEIGHT/2-1,SCREEN_WIDTH,SCREEN_HEIGHT/2+1,BLACK);
   
   
 }

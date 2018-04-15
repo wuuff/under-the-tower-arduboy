@@ -750,23 +750,23 @@ void draw_world(){
         case DOCK3:
           //First 4 are first frame, second 4 are second frame
           if( worldframe >= 0 && worldframe <= 3 ){
-            gb.display.drawBitmap( (x*8 - dudex) + SCREEN_WIDTH/2 - 4, (y*8 - dudey) + SCREEN_HEIGHT/2 - 4, &tiles[tile*10] );
+            gb.drawSlowXYBitmap( (x*8 - dudex) + SCREEN_WIDTH/2 - 4, (y*8 - dudey) + SCREEN_HEIGHT/2 - 4, &tiles[tile*10],8,8 );
           }else{
             //All animated tiles have their variation one tile after it
-            gb.display.drawBitmap( (x*8 - dudex) + SCREEN_WIDTH/2 - 4, (y*8 - dudey) + SCREEN_HEIGHT/2 - 4, &tiles[(tile+1)*10] );
+            gb.drawSlowXYBitmap( (x*8 - dudex) + SCREEN_WIDTH/2 - 4, (y*8 - dudey) + SCREEN_HEIGHT/2 - 4, &tiles[(tile+1)*10],8,8 );
           }
           break;
           
         default:
-          gb.display.drawBitmap( (x*8 - dudex) + SCREEN_WIDTH/2 - 4, (y*8 - dudey) + SCREEN_HEIGHT/2 - 4, &tiles[tile*10] );
+          gb.drawSlowXYBitmap( (x*8 - dudex) + SCREEN_WIDTH/2 - 4, (y*8 - dudey) + SCREEN_HEIGHT/2 - 4, &tiles[tile*10],8,8 );
       } 
     }
   }
   //Draw player.  If moving and frames dictate it so, play walking animation
   if( player_moving && (dudeframe/2 == 0 || dudeframe/2 == 2) ){
-    gb.display.drawSlowXYBitmap(SCREEN_WIDTH/2-4,SCREEN_HEIGHT/2-4,player_sprites+((dudeframe/2)+dudeanimation*3)*10, 8, 8);
+    gb.drawSlowXYBitmap(SCREEN_WIDTH/2-4,SCREEN_HEIGHT/2-4,player_sprites+((dudeframe/2)+dudeanimation*3)*10, 8, 8);
   }else{
-    gb.display.drawSlowXYBitmap(SCREEN_WIDTH/2-4,SCREEN_HEIGHT/2-4,player_sprites+(1+dudeanimation*3)*10, 8, 8);
+    gb.drawSlowXYBitmap(SCREEN_WIDTH/2-4,SCREEN_HEIGHT/2-4,player_sprites+(1+dudeanimation*3)*10, 8, 8);
   }
 }
 
@@ -792,7 +792,7 @@ uint8_t test_world_collision(uint8_t dir){
 
 void step_world(){
   player_moving = 0;
-  if( gb.buttons.repeat(BTN_UP,1) ){
+  if( gb.pressed(UP_BUTTON) ){
     uint8_t collision = 0;
     collision = test_world_collision(UP);
     if( collision == DOOR ){
@@ -829,17 +829,17 @@ void step_world(){
       player_moving = 1;
     }
   }
-  else if(gb.buttons.repeat(BTN_DOWN,1) && !test_world_collision(DOWN)){
+  else if(gb.pressed(DOWN_BUTTON) && !test_world_collision(DOWN)){
     dudey++;
     dudeanimation = DOWN;
     player_moving = 1;
   }
-  if(gb.buttons.repeat(BTN_LEFT,1) && !test_world_collision(LEFT)){
+  if(gb.pressed(LEFT_BUTTON) && !test_world_collision(LEFT)){
     dudex--;
     dudeanimation = LEFT;
     player_moving = 1;
   }
-  else if(gb.buttons.repeat(BTN_RIGHT,1) && !test_world_collision(RIGHT)){
+  else if(gb.pressed(RIGHT_BUTTON) && !test_world_collision(RIGHT)){
     dudex++;
     dudeanimation = RIGHT;
     player_moving = 1;

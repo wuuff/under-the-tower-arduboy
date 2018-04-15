@@ -272,19 +272,19 @@ void draw_dungeon(){
           /*gb.display.cursorX = (j*8 - dudex)+(SCREEN_WIDTH/2-4);
           gb.display.cursorY = (i*8 - dudey)+(SCREEN_HEIGHT/2-4);
           gb.display.print( ((tile-2)+(pgm_read_byte(&(dungeons[dungeonid].theme))*NUM_DUN_TILES) ) );*/
-          gb.display.drawBitmap((j*8 - dudex)+(SCREEN_WIDTH/2-4),(i*8 - dudey)+(SCREEN_HEIGHT/2-4),&dungeon_tiles[((tile-2)+(pgm_read_byte(&(dungeons[dungeonid].theme))*NUM_DUN_TILES))*10]);
+          gb.drawSlowXYBitmap((j*8 - dudex)+(SCREEN_WIDTH/2-4),(i*8 - dudey)+(SCREEN_HEIGHT/2-4),&dungeon_tiles[((tile-2)+(pgm_read_byte(&(dungeons[dungeonid].theme))*NUM_DUN_TILES))*10],8,8);
         }else{
           //If this is a common tile, then draw that specific tile
-          gb.display.drawBitmap((j*8 - dudex)+(SCREEN_WIDTH/2-4),(i*8 - dudey)+(SCREEN_HEIGHT/2-4),&common_tiles[(tile-2-NUM_DUN_TILES)*10]);
+          gb.drawSlowXYBitmap((j*8 - dudex)+(SCREEN_WIDTH/2-4),(i*8 - dudey)+(SCREEN_HEIGHT/2-4),&common_tiles[(tile-2-NUM_DUN_TILES)*10],8,8);
         }
       }
     }
   }
   //Draw player.  If moving and frames dictate it so, play walking animation
   if( player_moving && (dudeframe/2 == 0 || dudeframe/2 == 2) ){
-    gb.display.drawBitmap(SCREEN_WIDTH/2-4,SCREEN_HEIGHT/2-4,player_sprites+((dudeframe/2)+dudeanimation*3)*10);
+    gb.drawSlowXYBitmap(SCREEN_WIDTH/2-4,SCREEN_HEIGHT/2-4,player_sprites+((dudeframe/2)+dudeanimation*3)*10,8,8);
   }else{
-    gb.display.drawBitmap(SCREEN_WIDTH/2-4,SCREEN_HEIGHT/2-4,player_sprites+(1+dudeanimation*3)*10);
+    gb.drawSlowXYBitmap(SCREEN_WIDTH/2-4,SCREEN_HEIGHT/2-4,player_sprites+(1+dudeanimation*3)*10,8,8);
   }
   /*gb.display.cursorX = 0;
   gb.display.cursorY = 0;
@@ -336,7 +336,7 @@ void test_collide_exit(uint8_t collision){
           //so this one is simple: exit the dungeon and place the player outside
           mode = TO_WORLD;
           transition = -SCREEN_HEIGHT/2;
-          gb.display.persistence = true;
+          persistence = true;
           dudex = pgm_read_byte(&(dungeons[dungeonid].x))*8;
           dudey = (pgm_read_byte(&(dungeons[dungeonid].y))+1)*8;
       //  break;
@@ -349,7 +349,7 @@ void test_collide_exit(uint8_t collision){
       dungeon_generated = 0;
       mode = TO_DUNGEON;
       transition = -SCREEN_HEIGHT/2;
-      gb.display.persistence = true;
+      persistence = true;
       return;
     case DUN_TILE_STAIRSDN:
       previous_level = dungeon_level;
@@ -357,7 +357,7 @@ void test_collide_exit(uint8_t collision){
       dungeon_generated = 0;
       mode = TO_DUNGEON;
       transition = -SCREEN_HEIGHT/2;
-      gb.display.persistence = true;
+      persistence = true;
       return;
   }
 }
@@ -388,7 +388,7 @@ void step_dungeon(){
 
   uint8_t collision = 0;
   
-  if( gb.buttons.repeat(BTN_UP,1) ){
+  if( gb.pressed(UP_BUTTON) ){
     collision = test_collision(UP);
     if( collision ){
       test_collide_exit(collision);
@@ -398,7 +398,7 @@ void step_dungeon(){
       player_moving = 1;
     }
   }
-  else if( gb.buttons.repeat(BTN_DOWN,1) ){
+  else if( gb.pressed(DOWN_BUTTON) ){
     collision = test_collision(DOWN);
     if( collision ){
       test_collide_exit(collision);
@@ -408,7 +408,7 @@ void step_dungeon(){
       player_moving = 1;
     }
   }
-  if( gb.buttons.repeat(BTN_LEFT,1) ){
+  if( gb.pressed(LEFT_BUTTON) ){
     collision = test_collision(LEFT);
     if( collision ){
       test_collide_exit(collision);
@@ -418,7 +418,7 @@ void step_dungeon(){
       player_moving = 1;
     }
   }
-  else if( gb.buttons.repeat(BTN_RIGHT,1) ){
+  else if( gb.pressed(RIGHT_BUTTON) ){
     collision = test_collision(RIGHT);
     if( collision ){
       test_collide_exit(collision);

@@ -1,6 +1,6 @@
 //#include <SPI.h>
 //Use for PROGMEM
-#include <avr/pgmspace.h>
+//#include <avr/pgmspace.h>
 #include "overworld.h"
 #include "save.h"
 #include "dialogue.h"
@@ -34,6 +34,7 @@ byte mode = WORLD;
 void setup() {
   // put your setup code here, to run once:
   gb.begin();
+  gb.setFrameRate(25);
   //gb.titleScreen(F("Test"));
   //gb.battery.show = false;
   mode = MAIN_MENU;
@@ -48,10 +49,10 @@ void setup() {
 void step_transition(){
   uint8_t i;
   for(i = 0; i < SCREEN_HEIGHT/2+1 - abs(transition); i++ ){
-    gb.display.drawFastVLine(i,0,SCREEN_HEIGHT);
-    gb.display.drawFastVLine(SCREEN_WIDTH-i,0,SCREEN_HEIGHT);
-    gb.display.drawFastHLine(0,i,SCREEN_WIDTH);
-    gb.display.drawFastHLine(0,SCREEN_HEIGHT-i,SCREEN_WIDTH);
+    gb.drawFastVLine(i,0,SCREEN_HEIGHT,BLACK);
+    gb.drawFastVLine(SCREEN_WIDTH-i,0,SCREEN_HEIGHT,BLACK);
+    gb.drawFastHLine(0,i,SCREEN_WIDTH,BLACK);
+    gb.drawFastHLine(0,SCREEN_HEIGHT-i,SCREEN_WIDTH,BLACK);
   }
   transition+=4;
   //If we are halfway into the transition, start drawing the next scene
@@ -71,10 +72,9 @@ void print_progress(){
     progress += game_status[i];
   }
   progress = (100*progress + (36+3+4+4+4+4)/2)/(36+3+4+4+4+4);
-  gb.display.cursorX = SCREEN_WIDTH/2-2*4;
-  gb.display.cursorY = SCREEN_HEIGHT-6;
-  gb.display.print(progress);
-  gb.display.print(F("%"));
+  gb.setCursor(SCREEN_WIDTH/2-2*4, SCREEN_HEIGHT-6);
+  gb.print(progress);
+  gb.print(F("%"));
 }
 
 void loop() {
@@ -85,7 +85,7 @@ void loop() {
     gb.pollButtons();
     
     //Set common values and tick animation frames regardless of mode, to save space by avoiding duplication between modes
-    gb.display.cursorY = 6;
+    gb.setCursor(0, 6);
   
     dudeframe++;
     dudeframe%=7;
@@ -145,22 +145,20 @@ void loop() {
         step_dialogue();
         break;
       case MAIN_MENU:
-        gb.cursor_x = SCREEN_WIDTH/2-7*4;
-        gb.display.print(F("UNDER THE TOWER"));
-        gb.display.cursorX = SCREEN_WIDTH/2-2*4;
-        gb.display.cursorY = SCREEN_HEIGHT/2;
-        gb.display.println(F("NEW"));
-        gb.display.cursorX = SCREEN_WIDTH/2-2*4;
-        gb.display.println(F("LOAD"));
-        gb.display.cursorX = SCREEN_WIDTH/2-2*4;
-        gb.display.print(F("QUIT"));
-        gb.display.cursorX = SCREEN_WIDTH/2-3*4;
-        gb.display.cursorY = SCREEN_HEIGHT/2;
+        gb.setCursor(SCREEN_WIDTH/2-7*4, gb.getCursorY());
+        gb.print(F("UNDER THE TOWER"));
+        gb.setCursor(SCREEN_WIDTH/2-2*4, SCREEN_HEIGHT/2);
+        gb.println(F("NEW"));
+        gb.setCursor(SCREEN_WIDTH/2-2*4, gb.getCursorY());
+        gb.println(F("LOAD"));
+        gb.setCursor(SCREEN_WIDTH/2-2*4, gb.getCursorY());
+        gb.print(F("QUIT"));
+        gb.setCursor(SCREEN_WIDTH/2-3*4, SCREEN_HEIGHT/2);
         if(menu_selection == 1){
-          gb.display.cursorY += 6;          
+          gb.setCursor(SCREEN_WIDTH/2-3*4, SCREEN_HEIGHT/2+6);        
         }
         if(menu_selection == 2){
-          gb.display.cursorY += 12;          
+          gb.setCursor(SCREEN_WIDTH/2-3*4, gb.getCursorY()+12);         
         }
         gb.print(F("\20"));
         if(gb.justPressed(UP_BUTTON)){
@@ -172,12 +170,12 @@ void loop() {
           menu_selection%=3;
         }
         else if(gb.justPressed(A_BUTTON)){
-          gb.pickRandomSeed();//For random numbers, later
+          gb.initRandomSeed();//For random numbers, later
           if(menu_selection == 1){
             restore_game();
           }
           else if(menu_selection == 2){
-            gb.changeGame();
+            //gb.exitToBootloader(); // Isn't found?
           }
           else{
             mode = WORLD;
@@ -185,21 +183,19 @@ void loop() {
         }
         break;
       case PAUSE_MENU:
-        gb.display.cursorX = SCREEN_WIDTH/2-3*4;
-        gb.display.print(F("PAUSED"));
-        gb.display.cursorX = SCREEN_WIDTH/2-2*4;
-        gb.display.cursorY = SCREEN_HEIGHT/2;
-        gb.display.println(F("BACK"));
+        gb.setCursor(SCREEN_WIDTH/2-3*4, gb.getCursorY());
+        gb.print(F("PAUSED"));
+        gb.setCursor(SCREEN_WIDTH/2-2*4, SCREEN_HEIGHT/2);
+        gb.println(F("BACK"));
         if( meta_mode == WORLD ){
-          gb.display.cursorX = SCREEN_WIDTH/2-2*4;
-          gb.display.print(F("SAVE"));
+          gb.setCursor(SCREEN_WIDTH/2-2*4, gb.getCursorY());
+          gb.print(F("SAVE"));
         }
-        gb.display.cursorX = SCREEN_WIDTH/2-3*4;
-        gb.display.cursorY = SCREEN_HEIGHT/2;
+        gb.setCursor(SCREEN_WIDTH/2-3*4, SCREEN_HEIGHT/2);
         if(menu_selection == 1){
-          gb.display.cursorY += 6;          
+          gb.setCursor(SCREEN_WIDTH/2-3*4, SCREEN_HEIGHT/2 + 6);          
         }
-        gb.display.print(F("\20"));
+        gb.print(F("\20"));
         print_progress();
         if(meta_mode == WORLD && gb.justPressed(UP_BUTTON)){
           menu_selection--;
@@ -217,25 +213,25 @@ void loop() {
         }
         break;
       case GAME_OVER:
-        gb.display.cursorX = SCREEN_WIDTH/2-4*4;
-        gb.display.print(F("GAME OVER"));
-        gb.display.cursorX = SCREEN_WIDTH/2-3*4;
-        gb.display.cursorY = SCREEN_HEIGHT/2;
-        gb.display.print(F("\20LOAD"));
+        gb.setCursor(SCREEN_WIDTH/2-4*4, gb.getCursorY());
+        gb.print(F("GAME OVER"));
+        gb.setCursor(SCREEN_WIDTH/2-3*4, SCREEN_HEIGHT/2);
+        gb.print(F("\20LOAD"));
         if(gb.justPressed(A_BUTTON)){
           restore_game();
         }
         break;
       case YOU_WIN:
-        gb.display.cursorX = SCREEN_WIDTH/2-3*4;
-        gb.display.print(F("YOU WIN"));
+        gb.setCursor(SCREEN_WIDTH/2-3*4, gb.getCursorY());
+        gb.print(F("YOU WIN"));
         print_progress();
     }
 
-    if(mode != COMBAT && mode < TO_WORLD && gb.buttons.pressed(BTN_C)){
+    if(mode != COMBAT && mode < TO_WORLD && gb.justPressed(B_BUTTON)){ // Was C button for Gamebuino, but A and B aren't used outside battles
       menu_selection = 0;
       meta_mode = mode;
       mode = PAUSE_MENU;
     }
+    gb.display();
   }
 }
