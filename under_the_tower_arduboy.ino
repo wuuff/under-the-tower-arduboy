@@ -1,4 +1,4 @@
-#include <SPI.h>
+//#include <SPI.h>
 //Use for PROGMEM
 #include <avr/pgmspace.h>
 #include "overworld.h"
@@ -7,8 +7,8 @@
 #include "battle.h"
 #include "dungeon.h"
 #include "events.h"
-#include <Gamebuino.h>
-Gamebuino gb;
+#include <Arduboy2.h>
+Arduboy2 gb; //Replacing Gamebuino object with Arduboy2 object
 
 #define SCREEN_WIDTH 84
 #define SCREEN_HEIGHT 48
@@ -57,7 +57,7 @@ void step_transition(){
   //If we are halfway into the transition, start drawing the next scene
   //And stop saving the last frame of the previous scene
   if( transition >= 0 ){
-    gb.display.persistence = false;
+    persistence = false;
   }
   //If we are done with the transition, move to the ordinary non-transition mode
   if( transition > SCREEN_HEIGHT/2 ){
@@ -78,7 +78,12 @@ void print_progress(){
 }
 
 void loop() {
-  if(gb.update()){
+  if(gb.nextFrame()){
+    if( !persistence ){
+      gb.clear();
+    }
+    gb.pollButtons();
+    
     //Set common values and tick animation frames regardless of mode, to save space by avoiding duplication between modes
     gb.display.cursorY = 6;
   
@@ -140,7 +145,7 @@ void loop() {
         step_dialogue();
         break;
       case MAIN_MENU:
-        gb.display.cursorX = SCREEN_WIDTH/2-7*4;
+        gb.cursor_x = SCREEN_WIDTH/2-7*4;
         gb.display.print(F("UNDER THE TOWER"));
         gb.display.cursorX = SCREEN_WIDTH/2-2*4;
         gb.display.cursorY = SCREEN_HEIGHT/2;
@@ -157,16 +162,16 @@ void loop() {
         if(menu_selection == 2){
           gb.display.cursorY += 12;          
         }
-        gb.display.print(F("\20"));
-        if(gb.buttons.pressed(BTN_UP)){
+        gb.print(F("\20"));
+        if(gb.justPressed(UP_BUTTON)){
           menu_selection--;
           if( menu_selection == 255 ) menu_selection = 2;
         }
-        else if(gb.buttons.pressed(BTN_DOWN)){
+        else if(gb.justPressed(DOWN_BUTTON)){
           menu_selection++;
           menu_selection%=3;
         }
-        else if(gb.buttons.pressed(BTN_A)){
+        else if(gb.justPressed(A_BUTTON)){
           gb.pickRandomSeed();//For random numbers, later
           if(menu_selection == 1){
             restore_game();
@@ -196,15 +201,15 @@ void loop() {
         }
         gb.display.print(F("\20"));
         print_progress();
-        if(meta_mode == WORLD && gb.buttons.pressed(BTN_UP)){
+        if(meta_mode == WORLD && gb.justPressed(UP_BUTTON)){
           menu_selection--;
           if( menu_selection == 255 ) menu_selection = 1;
         }
-        else if(meta_mode == WORLD && gb.buttons.pressed(BTN_DOWN)){
+        else if(meta_mode == WORLD && gb.justPressed(DOWN_BUTTON)){
           menu_selection++;
           menu_selection%=2;
         }
-        else if(gb.buttons.pressed(BTN_A)){
+        else if(gb.justPressed(A_BUTTON)){
           if(menu_selection == 1){
             save_game();
           }
@@ -217,7 +222,7 @@ void loop() {
         gb.display.cursorX = SCREEN_WIDTH/2-3*4;
         gb.display.cursorY = SCREEN_HEIGHT/2;
         gb.display.print(F("\20LOAD"));
-        if(gb.buttons.pressed(BTN_A)){
+        if(gb.justPressed(A_BUTTON)){
           restore_game();
         }
         break;

@@ -764,9 +764,9 @@ void draw_world(){
   }
   //Draw player.  If moving and frames dictate it so, play walking animation
   if( player_moving && (dudeframe/2 == 0 || dudeframe/2 == 2) ){
-    gb.display.drawBitmap(SCREEN_WIDTH/2-4,SCREEN_HEIGHT/2-4,player_sprites+((dudeframe/2)+dudeanimation*3)*10);
+    gb.display.drawSlowXYBitmap(SCREEN_WIDTH/2-4,SCREEN_HEIGHT/2-4,player_sprites+((dudeframe/2)+dudeanimation*3)*10, 8, 8);
   }else{
-    gb.display.drawBitmap(SCREEN_WIDTH/2-4,SCREEN_HEIGHT/2-4,player_sprites+(1+dudeanimation*3)*10);
+    gb.display.drawSlowXYBitmap(SCREEN_WIDTH/2-4,SCREEN_HEIGHT/2-4,player_sprites+(1+dudeanimation*3)*10, 8, 8);
   }
 }
 
@@ -817,7 +817,7 @@ void step_world(){
       }
       mode = TO_DUNGEON;
       transition = -SCREEN_HEIGHT/2;
-      gb.display.persistence = true;
+      persistence = true;
       dungeon_generated = 0;
       dungeon_level = 0;
       previous_level = -1;

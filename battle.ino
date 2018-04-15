@@ -1,3 +1,5 @@
+bool persistence = false;
+
 //Scamp: Level 1
 //Ruffian: Level 2
 //Scoundrel: Level 4

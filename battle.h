@@ -1,3 +1,5 @@
+extern bool persistence;
+
 #define RAT 0
 #define SCAMP 1
 #define RUFFIAN 2
