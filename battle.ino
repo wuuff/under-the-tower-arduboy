@@ -846,8 +846,8 @@ void do_combat(){
   else if( (combat_mode >= MUDLARK && combat_mode <= NURSE) || combat_mode == POSTCOMBAT ){
 
     if( combat_mode >= MUDLARK && combat_mode <= NURSE ){
-      gb.drawRect(SCREEN_WIDTH/2, SCREEN_HEIGHT/2+1, SCREEN_WIDTH/2-2, 3,BLACK);
-      gb.drawLine(SCREEN_WIDTH/2, SCREEN_HEIGHT/2+2, SCREEN_WIDTH/2+((SCREEN_WIDTH/2-4)*party[combat_mode].health)/(party[combat_mode].level*20), SCREEN_HEIGHT/2+2,BLACK);
+      gb.drawRect(SCREEN_WIDTH/2, SCREEN_HEIGHT/2+1, SCREEN_WIDTH/2-2, 3);
+      gb.drawLine(SCREEN_WIDTH/2, SCREEN_HEIGHT/2+2, SCREEN_WIDTH/2+((SCREEN_WIDTH/2-4)*party[combat_mode].health)/(party[combat_mode].level*20), SCREEN_HEIGHT/2+2);
 
       gb.setCursor(SCREEN_WIDTH-(8*4+1), SCREEN_HEIGHT/2+6);
       copy_to_buffer(combat_mode,player_names);

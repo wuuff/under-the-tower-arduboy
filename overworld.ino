@@ -730,11 +730,11 @@ byte worldframe = 0;
 
 void draw_world(){
   uint8_t tile;
-  //gb.display.println(dudex/8 - 6);
+  //gb.println(dudex/8 - 8);
   //gb.display.println(dudey/8 - 4);
   //Signed because we may seek off the edge of the map
-  for( int8_t y = dudey/8 - 4; y <= dudey/8 + 4; y++ ){
-    for( int8_t x = dudex/8 - 6; x <= dudex/8 + 6; x++ ){
+  for( int16_t y = dudey/8 - 4; y <= dudey/8 + 5; y++ ){
+    for( int16_t x = dudex/8 < 8 ? 0 : dudex/8 - 8 ; x <= dudex/8 + 9; x++ ){
       //Draw the tile at the relative distance from the player
       tile = world_get(y*64+x);
       switch( tile ){
@@ -754,7 +754,23 @@ void draw_world(){
           break;
           
         default:
-          gb.drawSlowXYBitmap( (x*8 - dudex) + SCREEN_WIDTH/2 - 4, (y*8 - dudey) + SCREEN_HEIGHT/2 - 4, &tiles[tile*8],8,8 );
+          //Draw extended water on the right side
+          if( x > 63 ){
+            //First 4 are first frame, second 4 are second frame
+            if( worldframe >= 0 && worldframe <= 3 ){
+              gb.drawSlowXYBitmap( (x*8 - dudex) + SCREEN_WIDTH/2 - 4, (y*8 - dudey) + SCREEN_HEIGHT/2 - 4, &tiles[WATER*8],8,8 );
+            }else{
+              //All animated tiles have their variation one tile after it
+              gb.drawSlowXYBitmap( (x*8 - dudex) + SCREEN_WIDTH/2 - 4, (y*8 - dudey) + SCREEN_HEIGHT/2 - 4, &tiles[(WATER+1)*8],8,8 );
+            }
+          }else{
+            gb.drawSlowXYBitmap( (x*8 - dudex) + SCREEN_WIDTH/2 - 4, (y*8 - dudey) + SCREEN_HEIGHT/2 - 4, &tiles[tile*8],8,8 );
+          }
+          //Draw duplicates of the leftmost tile to give the appearance of things continuing
+          if( x == 0 ){
+            gb.drawSlowXYBitmap( (x*8 - dudex) + SCREEN_WIDTH/2 - 4 - 8, (y*8 - dudey) + SCREEN_HEIGHT/2 - 4, &tiles[tile*8],8,8 );
+            gb.drawSlowXYBitmap( (x*8 - dudex) + SCREEN_WIDTH/2 - 4 - 16, (y*8 - dudey) + SCREEN_HEIGHT/2 - 4, &tiles[tile*8],8,8 );
+          }
       } 
     }
   }
