@@ -126,9 +126,9 @@ uint8_t dialogue_remaining;
 
 void step_dialogue(){
   //gb.display.setColor(WHITE);
-  gb.fillRect(0,SCREEN_HEIGHT/2-1,SCREEN_WIDTH,SCREEN_HEIGHT/2+1, WHITE);
+  gb.fillRect(0,SCREEN_HEIGHT/2-1,SCREEN_WIDTH,SCREEN_HEIGHT/2+1, BLACK);
   //gb.display.setColor(BLACK);
-  gb.drawRect(0,SCREEN_HEIGHT/2-1,SCREEN_WIDTH,SCREEN_HEIGHT/2+1, BLACK);
+  gb.drawRect(0,SCREEN_HEIGHT/2-1,SCREEN_WIDTH,SCREEN_HEIGHT/2+1);
 
   gb.setCursor(1, SCREEN_HEIGHT/2);
   //If the first char is a zero, then no character is speaking, so skip this

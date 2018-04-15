@@ -35,7 +35,6 @@ int8_t previous_level = -1; //-1 means that the player entered the dungeon
 
 const byte common_tiles[] PROGMEM = {
 //Door
-8,8,
 B11111111,
 B10000001,
 B10000001,
@@ -45,7 +44,6 @@ B10000001,
 B10000001,
 B10000001,
 //Stairs up
-8,8,
 B11110000,
 B10011100,
 B10010111,
@@ -55,7 +53,6 @@ B11110101,
 B10011101,
 B10000111,
 //Stairs down
-8,8,
 B11111111,
 B11111111,
 B10111111,
@@ -65,7 +62,6 @@ B10101011,
 B10101011,
 B11111111,
 //Wall top
-8,8,
 B10101010,
 B01010101,
 B10101010,
@@ -113,7 +109,6 @@ void mapdetail(char map[][MAPSIZE], int mapwidth, int mapheight);
 
 const byte dungeon_tiles[] PROGMEM = {
   //DUN_THEME_CATPAW
-8,8,
 B01010101,
 B01010101,
 B01010101,
@@ -122,7 +117,6 @@ B11111111,
 B10000001,
 B10000001,
 B11111111,
-8,8,
 B01111110,
 B10000001,
 B10000001,
@@ -131,7 +125,6 @@ B10111101,
 B10000001,
 B10000001,
 B10000001,
-8,8,
 B10000001,
 B10000001,
 B10000001,
@@ -140,7 +133,6 @@ B10111101,
 B10000001,
 B10111101,
 B11000011,
-8,8,
 B00000000,
 B00000000,
 B01111110,
@@ -150,7 +142,6 @@ B00011000,
 B00111100,
 B01000010,
   //DUN_THEME_BRICK
-8,8,
 B00100010,
 B11111111,
 B10001000,
@@ -159,7 +150,6 @@ B00100010,
 B11111111,
 B10001000,
 B11111111,
-8,8,
 B00000000,
 B11111111,
 B10100001,
@@ -168,7 +158,6 @@ B11000101,
 B10100011,
 B10011001,
 B11111111,
-8,8,
 B11111111,
 B10001001,
 B10010001,
@@ -177,7 +166,6 @@ B11000101,
 B10001001,
 B10010001,
 B11111111,
-8,8,
 B00011000,
 B01100110,
 B10000001,
@@ -187,7 +175,6 @@ B10000001,
 B11100111,
 B11111111,
   //DUN_THEME_SHIP
-8,8,
 B00000000,
 B00000000,
 B00000000,
@@ -196,7 +183,7 @@ B00000000,
 B00000000,
 B00000000,
 B11111111,
-8,8,
+
 B00011000,
 B01100110,
 B10000001,
@@ -205,7 +192,7 @@ B10011001,
 B10000001,
 B11100111,
 B11111111,
-8,8,
+
 B10011001,
 B10000001,
 B11100111,
@@ -214,7 +201,7 @@ B10011001,
 B10000001,
 B01100110,
 B00011000,
-8,8,
+
 B11111111,
 B10000001,
 B10000001,
@@ -224,7 +211,6 @@ B10011001,
 B11100001,
 B11111111,
   //DUN_THEME_HOSPITAL
-8,8,
 B00000001,
 B00000001,
 B00000001,
@@ -233,7 +219,7 @@ B00010000,
 B00010000,
 B00010000,
 B11111111,
-8,8,
+
 B01111110,
 B10000001,
 B10000001,
@@ -242,7 +228,7 @@ B10111101,
 B10000001,
 B10000001,
 B10000001,
-8,8,
+
 B10000001,
 B10000001,
 B10000001,
@@ -251,7 +237,7 @@ B10111101,
 B10000001,
 B10111101,
 B11000011,
-8,8,
+
 B00011100,
 B00110110,
 B11101100,
@@ -272,19 +258,19 @@ void draw_dungeon(){
           /*gb.display.cursorX = (j*8 - dudex)+(SCREEN_WIDTH/2-4);
           gb.display.cursorY = (i*8 - dudey)+(SCREEN_HEIGHT/2-4);
           gb.display.print( ((tile-2)+(pgm_read_byte(&(dungeons[dungeonid].theme))*NUM_DUN_TILES) ) );*/
-          gb.drawSlowXYBitmap((j*8 - dudex)+(SCREEN_WIDTH/2-4),(i*8 - dudey)+(SCREEN_HEIGHT/2-4),&dungeon_tiles[((tile-2)+(pgm_read_byte(&(dungeons[dungeonid].theme))*NUM_DUN_TILES))*10],8,8);
+          gb.drawSlowXYBitmap((j*8 - dudex)+(SCREEN_WIDTH/2-4),(i*8 - dudey)+(SCREEN_HEIGHT/2-4),&dungeon_tiles[((tile-2)+(pgm_read_byte(&(dungeons[dungeonid].theme))*NUM_DUN_TILES))*8],8,8);
         }else{
           //If this is a common tile, then draw that specific tile
-          gb.drawSlowXYBitmap((j*8 - dudex)+(SCREEN_WIDTH/2-4),(i*8 - dudey)+(SCREEN_HEIGHT/2-4),&common_tiles[(tile-2-NUM_DUN_TILES)*10],8,8);
+          gb.drawSlowXYBitmap((j*8 - dudex)+(SCREEN_WIDTH/2-4),(i*8 - dudey)+(SCREEN_HEIGHT/2-4),&common_tiles[(tile-2-NUM_DUN_TILES)*8],8,8);
         }
       }
     }
   }
   //Draw player.  If moving and frames dictate it so, play walking animation
   if( player_moving && (dudeframe/2 == 0 || dudeframe/2 == 2) ){
-    gb.drawSlowXYBitmap(SCREEN_WIDTH/2-4,SCREEN_HEIGHT/2-4,player_sprites+((dudeframe/2)+dudeanimation*3)*10,8,8);
+    gb.drawSlowXYBitmap(SCREEN_WIDTH/2-4,SCREEN_HEIGHT/2-4,player_sprites+((dudeframe/2)+dudeanimation*3)*8,8,8);
   }else{
-    gb.drawSlowXYBitmap(SCREEN_WIDTH/2-4,SCREEN_HEIGHT/2-4,player_sprites+(1+dudeanimation*3)*10,8,8);
+    gb.drawSlowXYBitmap(SCREEN_WIDTH/2-4,SCREEN_HEIGHT/2-4,player_sprites+(1+dudeanimation*3)*8,8,8);
   }
   /*gb.display.cursorX = 0;
   gb.display.cursorY = 0;

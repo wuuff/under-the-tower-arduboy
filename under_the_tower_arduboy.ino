@@ -10,8 +10,8 @@
 #include <Arduboy2.h>
 Arduboy2 gb; //Replacing Gamebuino object with Arduboy2 object
 
-#define SCREEN_WIDTH 84
-#define SCREEN_HEIGHT 48
+#define SCREEN_WIDTH 128
+#define SCREEN_HEIGHT 64
 
 #define WORLD 0
 #define COMBAT 1
@@ -35,6 +35,7 @@ void setup() {
   // put your setup code here, to run once:
   gb.begin();
   gb.setFrameRate(25);
+  gb.invert(true);//Make white the predominant color
   //gb.titleScreen(F("Test"));
   //gb.battery.show = false;
   mode = MAIN_MENU;
@@ -49,10 +50,10 @@ void setup() {
 void step_transition(){
   uint8_t i;
   for(i = 0; i < SCREEN_HEIGHT/2+1 - abs(transition); i++ ){
-    gb.drawFastVLine(i,0,SCREEN_HEIGHT,BLACK);
-    gb.drawFastVLine(SCREEN_WIDTH-i,0,SCREEN_HEIGHT,BLACK);
-    gb.drawFastHLine(0,i,SCREEN_WIDTH,BLACK);
-    gb.drawFastHLine(0,SCREEN_HEIGHT-i,SCREEN_WIDTH,BLACK);
+    gb.drawFastVLine(i,0,SCREEN_HEIGHT);
+    gb.drawFastVLine(SCREEN_WIDTH-i,0,SCREEN_HEIGHT);
+    gb.drawFastHLine(0,i,SCREEN_WIDTH);
+    gb.drawFastHLine(0,SCREEN_HEIGHT-i,SCREEN_WIDTH);
   }
   transition+=4;
   //If we are halfway into the transition, start drawing the next scene

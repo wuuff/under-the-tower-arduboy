@@ -105,7 +105,8 @@ const char enemy_names[][8] PROGMEM = {
 "SHADOW"
 };
 
-const byte enemybmps[] PROGMEM = {8,16, // Scoundrel
+const byte enemybmps[] PROGMEM = {
+  // Scoundrel
 B01000000,
 B01111000,
 B00101100,
@@ -122,7 +123,7 @@ B00010100,
 B00110010,
 B11100010,
 B10000011,
-8,16,                   // Rat
+                   // Rat
 B00000000,
 B00000000,
 B00000000,
@@ -139,7 +140,7 @@ B01010010,
 B01111001,
 B11111110,
 B01111100,
-8,16,                   // Bouncer
+                   // Bouncer
 B00000000,
 B00000000,
 B00011000,
@@ -156,7 +157,7 @@ B01100110,
 B01100110,
 B00100100,
 B01100110,
-8,16,                   // Crab
+                   // Crab
 B00000000,
 B00000000,
 B00000000,
@@ -173,7 +174,7 @@ B10101001,
 B10000001,
 B01111110,
 B00100100,
-8,16,                  //Sailor
+                  //Sailor
 B00111100,
 B01111100,
 B10100100,
@@ -190,7 +191,7 @@ B01111110,
 B01000010,
 B01000010,
 B11000011,
-8,16,                   //Doctor
+                   //Doctor
 B00011000,
 B00111100,
 B00111100,
@@ -207,7 +208,7 @@ B00100100,
 B00111100,
 B00100100,
 B01100110,
-8,16,                   //Golem
+                   //Golem
 B11000011,
 B10000001,
 B10111101,
@@ -224,7 +225,7 @@ B01101100,
 B01101100,
 B01101110,
 B11100110,
-8,16,                     //Leader
+                     //Leader
 B00111100,
 B00111100,
 B01111110,
@@ -775,19 +776,19 @@ void do_combat(){
     //gb.cursor_x = 0;
     copy_to_buffer(enemy_buffer[0].nme,enemy_names);
     gb.print(combat_buffer);
-    gb.drawSlowXYBitmap(SCREEN_WIDTH/4-4,SCREEN_HEIGHT/8,&enemybmps[enemy_buffer[0].img*18],8,16);
+    gb.drawSlowXYBitmap(SCREEN_WIDTH/4-4,SCREEN_HEIGHT/8,&enemybmps[enemy_buffer[0].img*16],8,16);
   }
   if(enemy_buffer[1].lvl != -1){
     gb.setCursor(SCREEN_WIDTH/2-(3*4)-2, 0);
     copy_to_buffer(enemy_buffer[1].nme,enemy_names);
     gb.print(combat_buffer);
-    gb.drawSlowXYBitmap(SCREEN_WIDTH/2-4,SCREEN_HEIGHT/8,&enemybmps[enemy_buffer[1].img*18],8,16);
+    gb.drawSlowXYBitmap(SCREEN_WIDTH/2-4,SCREEN_HEIGHT/8,&enemybmps[enemy_buffer[1].img*16],8,16);
   }
   if(enemy_buffer[2].lvl != -1){
     gb.setCursor(SCREEN_WIDTH-(7*4), 0);
     copy_to_buffer(enemy_buffer[2].nme,enemy_names);
     gb.print(combat_buffer);
-    gb.drawSlowXYBitmap(SCREEN_WIDTH/4*3-4,SCREEN_HEIGHT/8,&enemybmps[enemy_buffer[2].img*18],8,16);
+    gb.drawSlowXYBitmap(SCREEN_WIDTH/4*3-4,SCREEN_HEIGHT/8,&enemybmps[enemy_buffer[2].img*16],8,16);
   }
 
   //If a message is displayed (dismissing the message steps combat forward)
@@ -1172,7 +1173,7 @@ void do_combat(){
     gb.display.print((char)(enemies[i]+'1'));
   }*/
 
-  gb.drawRect(0,SCREEN_HEIGHT/2-1,SCREEN_WIDTH,SCREEN_HEIGHT/2+1,BLACK);
+  gb.drawRect(0,SCREEN_HEIGHT/2-1,SCREEN_WIDTH,SCREEN_HEIGHT/2+1);
   
   
 }
