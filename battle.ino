@@ -660,12 +660,12 @@ void copy_action_to_msg_buffer(uint8_t source, uint8_t dest, uint16_t amount, ui
 }
 
 void draw_menu(byte index){
-  gb.setCursor(0, SCREEN_HEIGHT/2-6);
+  gb.setCursor(0, SCREEN_HEIGHT/2-8);
   uint8_t offset = 0;
   for(byte i = 0; i < 4; i++){
-    gb.setCursor(1, gb.getCursorY() + 6);
+    gb.setCursor(1, gb.getCursorY() + 8);
     if( combat_selection == i ) gb.print(F("\20"));
-    gb.setCursor(4, gb.getCursorY());
+    gb.setCursor(6, gb.getCursorY());
     combat_message[0] = '\0';//If we don't copy anything in, print nothing
     if( index <= SECONDARY_MENU ){
       offset = append_to_msg_buffer(index*4+i,menu_text,0);//Ordinary menus with fixed text
@@ -779,13 +779,13 @@ void do_combat(){
     gb.drawSlowXYBitmap(SCREEN_WIDTH/4-4,SCREEN_HEIGHT/8,&enemybmps[enemy_buffer[0].img*16],8,16);
   }
   if(enemy_buffer[1].lvl != -1){
-    gb.setCursor(SCREEN_WIDTH/2-(3*4)-2, 0);
+    gb.setCursor(SCREEN_WIDTH/2-(3*6)-3, 0);
     copy_to_buffer(enemy_buffer[1].nme,enemy_names);
     gb.print(combat_buffer);
     gb.drawSlowXYBitmap(SCREEN_WIDTH/2-4,SCREEN_HEIGHT/8,&enemybmps[enemy_buffer[1].img*16],8,16);
   }
   if(enemy_buffer[2].lvl != -1){
-    gb.setCursor(SCREEN_WIDTH-(7*4), 0);
+    gb.setCursor(SCREEN_WIDTH-(7*6), 0);
     copy_to_buffer(enemy_buffer[2].nme,enemy_names);
     gb.print(combat_buffer);
     gb.drawSlowXYBitmap(SCREEN_WIDTH/4*3-4,SCREEN_HEIGHT/8,&enemybmps[enemy_buffer[2].img*16],8,16);
@@ -793,7 +793,7 @@ void do_combat(){
 
   //If a message is displayed (dismissing the message steps combat forward)
   if( combat_mode == MESSAGE || combat_mode == VICTORY || combat_mode == DEFEAT ){
-     gb.setCursor(4, SCREEN_HEIGHT/2);
+     gb.setCursor(6, SCREEN_HEIGHT/2);
      gb.print(combat_message);
      if(gb.justPressed(A_BUTTON)){
         byte step_forward = 1;
@@ -849,15 +849,15 @@ void do_combat(){
       gb.drawRect(SCREEN_WIDTH/2, SCREEN_HEIGHT/2+1, SCREEN_WIDTH/2-2, 3);
       gb.drawLine(SCREEN_WIDTH/2, SCREEN_HEIGHT/2+2, SCREEN_WIDTH/2+((SCREEN_WIDTH/2-4)*party[combat_mode].health)/(party[combat_mode].level*20), SCREEN_HEIGHT/2+2);
 
-      gb.setCursor(SCREEN_WIDTH-(8*4+1), SCREEN_HEIGHT/2+6);
+      gb.setCursor(SCREEN_WIDTH-(8*6+1), SCREEN_HEIGHT/2+6);
       copy_to_buffer(combat_mode,player_names);
       gb.print(combat_buffer);
-      gb.setCursor(SCREEN_WIDTH-(8*4+1), SCREEN_HEIGHT/2+12);
+      gb.setCursor(SCREEN_WIDTH-(8*6+1), SCREEN_HEIGHT/2+14);
       gb.print(party[combat_mode].health);
       gb.print(F("/"));
       gb.print(party[combat_mode].level*20);
 
-      gb.setCursor(SCREEN_WIDTH-(8*4+1), SCREEN_HEIGHT/2+18);
+      gb.setCursor(SCREEN_WIDTH-(8*6+1), SCREEN_HEIGHT/2+22);
       gb.print(F("XP"));
       gb.print(party[combat_mode].xp);
       gb.print(F("L"));

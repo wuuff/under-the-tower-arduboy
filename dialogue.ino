@@ -134,7 +134,7 @@ void step_dialogue(){
   if( combat_buffer[0] != 0 ){
     gb.println(combat_buffer);//Display name of speaker, set before this
   }
-  gb.setCursor(4, gb.getCursorY());
+  gb.setCursor(6, gb.getCursorY());
   gb.print(combat_message);
 
   //gb.display.setColor(BLACK);

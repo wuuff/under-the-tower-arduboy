@@ -73,7 +73,7 @@ void print_progress(){
     progress += game_status[i];
   }
   progress = (100*progress + (36+3+4+4+4+4)/2)/(36+3+4+4+4+4);
-  gb.setCursor(SCREEN_WIDTH/2-2*4, SCREEN_HEIGHT-6);
+  gb.setCursor(SCREEN_WIDTH/2-2*6, SCREEN_HEIGHT-8);
   gb.print(progress);
   gb.print(F("%"));
 }
@@ -146,20 +146,20 @@ void loop() {
         step_dialogue();
         break;
       case MAIN_MENU:
-        gb.setCursor(SCREEN_WIDTH/2-7*4, gb.getCursorY());
+        gb.setCursor(SCREEN_WIDTH/2-7*6, gb.getCursorY());
         gb.print(F("UNDER THE TOWER"));
-        gb.setCursor(SCREEN_WIDTH/2-2*4, SCREEN_HEIGHT/2);
+        gb.setCursor(SCREEN_WIDTH/2-2*6, SCREEN_HEIGHT/2);
         gb.println(F("NEW"));
-        gb.setCursor(SCREEN_WIDTH/2-2*4, gb.getCursorY());
+        gb.setCursor(SCREEN_WIDTH/2-2*6, gb.getCursorY());
         gb.println(F("LOAD"));
-        gb.setCursor(SCREEN_WIDTH/2-2*4, gb.getCursorY());
+        gb.setCursor(SCREEN_WIDTH/2-2*6, gb.getCursorY());
         gb.print(F("QUIT"));
-        gb.setCursor(SCREEN_WIDTH/2-3*4, SCREEN_HEIGHT/2);
+        gb.setCursor(SCREEN_WIDTH/2-3*6, SCREEN_HEIGHT/2);
         if(menu_selection == 1){
-          gb.setCursor(SCREEN_WIDTH/2-3*4, SCREEN_HEIGHT/2+6);        
+          gb.setCursor(SCREEN_WIDTH/2-3*6, SCREEN_HEIGHT/2+8);        
         }
         if(menu_selection == 2){
-          gb.setCursor(SCREEN_WIDTH/2-3*4, gb.getCursorY()+12);         
+          gb.setCursor(SCREEN_WIDTH/2-3*6, gb.getCursorY()+16);         
         }
         gb.print(F("\20"));
         if(gb.justPressed(UP_BUTTON)){
@@ -184,17 +184,17 @@ void loop() {
         }
         break;
       case PAUSE_MENU:
-        gb.setCursor(SCREEN_WIDTH/2-3*4, gb.getCursorY());
+        gb.setCursor(SCREEN_WIDTH/2-3*6, gb.getCursorY());
         gb.print(F("PAUSED"));
-        gb.setCursor(SCREEN_WIDTH/2-2*4, SCREEN_HEIGHT/2);
+        gb.setCursor(SCREEN_WIDTH/2-2*6, SCREEN_HEIGHT/2);
         gb.println(F("BACK"));
         if( meta_mode == WORLD ){
-          gb.setCursor(SCREEN_WIDTH/2-2*4, gb.getCursorY());
+          gb.setCursor(SCREEN_WIDTH/2-2*6, gb.getCursorY());
           gb.print(F("SAVE"));
         }
-        gb.setCursor(SCREEN_WIDTH/2-3*4, SCREEN_HEIGHT/2);
+        gb.setCursor(SCREEN_WIDTH/2-3*6, SCREEN_HEIGHT/2);
         if(menu_selection == 1){
-          gb.setCursor(SCREEN_WIDTH/2-3*4, SCREEN_HEIGHT/2 + 6);          
+          gb.setCursor(SCREEN_WIDTH/2-3*6, SCREEN_HEIGHT/2 + 8);          
         }
         gb.print(F("\20"));
         print_progress();
@@ -214,16 +214,16 @@ void loop() {
         }
         break;
       case GAME_OVER:
-        gb.setCursor(SCREEN_WIDTH/2-4*4, gb.getCursorY());
+        gb.setCursor(SCREEN_WIDTH/2-4*6, gb.getCursorY());
         gb.print(F("GAME OVER"));
-        gb.setCursor(SCREEN_WIDTH/2-3*4, SCREEN_HEIGHT/2);
+        gb.setCursor(SCREEN_WIDTH/2-3*6, SCREEN_HEIGHT/2);
         gb.print(F("\20LOAD"));
         if(gb.justPressed(A_BUTTON)){
           restore_game();
         }
         break;
       case YOU_WIN:
-        gb.setCursor(SCREEN_WIDTH/2-3*4, gb.getCursorY());
+        gb.setCursor(SCREEN_WIDTH/2-3*6, gb.getCursorY());
         gb.print(F("YOU WIN"));
         print_progress();
     }

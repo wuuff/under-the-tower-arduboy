@@ -2,13 +2,15 @@
 #include "battle.h"
 #include <EEPROM.h>
 
+#define SAVE_BASE 79
+
 //All game status variables
 int8_t game_status[] = {-1,0,0,0,0,0};
 
 void save_game(){
   uint8_t i;
-  uint8_t base = 1;
-  EEPROM.update(0,'T');
+  uint8_t base = SAVE_BASE+1;
+  EEPROM.update(SAVE_BASE,'T');
   //Save game status
   for( i = 0; i < 6; i++ ){
     EEPROM.update(i+base,game_status[i]);
@@ -34,8 +36,8 @@ void save_game(){
 
 void restore_game(){
   uint8_t i;
-  uint8_t base = 1;
-  if( EEPROM.read(0) == 'T' ){
+  uint8_t base = SAVE_BASE+1;
+  if( EEPROM.read(SAVE_BASE) == 'T' ){
     //Save game status
     for( i = 0; i < 6; i++ ){
       game_status[i] = EEPROM.read(i+base);
