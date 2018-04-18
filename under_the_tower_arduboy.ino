@@ -185,7 +185,28 @@ void loop() {
         break;
       case PAUSE_MENU:
         gb.setCursor(SCREEN_WIDTH/2-3*6, gb.getCursorY());
-        gb.print(F("PAUSED"));
+        gb.println(F("PAUSED"));
+        gb.setCursor(1*6, gb.getCursorY());
+        gb.print(F("FIND "));
+        if( game_status[STATUS_MAIN] <= 2 ){
+          gb.print(F("GIRL AT CATPAW"));
+        }else if( game_status[STATUS_MAIN] <= 8 ){
+          gb.print(F("GIRL'S HOUSE"));
+        }else if( game_status[STATUS_MAIN] <= 9 ){
+          gb.print(F("GIRL'S FATHER"));
+        }else if( game_status[STATUS_MAIN] <= 12 ){
+          gb.print(F("BIG SHIP"));
+        }else if( game_status[STATUS_MAIN] <= 15 ){
+          gb.print(F("NURSE"));
+        }else if( game_status[STATUS_MAIN] <= 18 ){
+          gb.print(F("HOSPITAL"));
+        }else if( game_status[STATUS_MAIN] <= 26 ){
+          gb.print(F("MAD DOCTOR"));
+        }else if( game_status[STATUS_MAIN] <= 27 ){
+          gb.print(F("TOWER"));
+        }else if( game_status[STATUS_MAIN] <= 35 ){
+          gb.print(F("LEADER"));
+        }
         gb.setCursor(SCREEN_WIDTH/2-2*6, SCREEN_HEIGHT/2);
         gb.println(F("BACK"));
         if( meta_mode == WORLD ){
