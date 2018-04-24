@@ -108,7 +108,7 @@ void loop() {
           else if( game_status[STATUS_MAIN] == 0 && dudex < 7*8 ){
             game_status[STATUS_MAIN] = 1;
             display_dialogue(TXT_SDW_INTRO,TXT_SDW_INTRO_LEN,SHADOW,player_names);
-          }else if( game_status[STATUS_MAIN] == 1 && dudey < 41*8 ){
+          }else if( game_status[STATUS_MAIN] == 1 && dudey < 42*8 ){
             game_status[STATUS_MAIN] = 2;
             display_dialogue(TXT_SDW_CATPAW,TXT_SDW_CATPAW_LEN,SHADOW,player_names);
           }/*else if( game_status[STATUS_MAIN] == 12 && dudex > 55*8 && dudey < 45*8 ){
@@ -188,30 +188,41 @@ void loop() {
         gb.println(F("PAUSED"));
         gb.setCursor(1*6, gb.getCursorY());
         gb.print(F("FIND "));
-        if( game_status[STATUS_MAIN] <= 2 ){
+        if( game_status[STATUS_MAIN] == 0 ){
+          gb.print(F("A  BETTER LIFE"));
+        }else if( game_status[STATUS_MAIN] <= 2 ){
           gb.print(F("GIRL AT CATPAW"));
         }else if( game_status[STATUS_MAIN] <= 8 ){
-          gb.print(F("GIRL'S HOUSE"));
+          gb.print(F(" GIRL'S  HOUSE"));
         }else if( game_status[STATUS_MAIN] <= 9 ){
-          gb.print(F("GIRL'S FATHER"));
+          gb.print(F(" GIRL'S FATHER"));
         }else if( game_status[STATUS_MAIN] <= 12 ){
-          gb.print(F("BIG SHIP"));
+          gb.print(F(" A   BIG  SHIP"));
         }else if( game_status[STATUS_MAIN] <= 15 ){
-          gb.print(F("NURSE"));
+          gb.print(F("   THE   NURSE"));
         }else if( game_status[STATUS_MAIN] <= 18 ){
-          gb.print(F("HOSPITAL"));
+          gb.print(F(" THE  HOSPITAL"));
         }else if( game_status[STATUS_MAIN] <= 26 ){
-          gb.print(F("MAD DOCTOR"));
+          gb.print(F("THE MAD DOCTOR"));
         }else if( game_status[STATUS_MAIN] <= 27 ){
-          gb.print(F("TOWER"));
+          gb.print(F("   THE   TOWER"));
         }else if( game_status[STATUS_MAIN] <= 35 ){
-          gb.print(F("LEADER"));
+          gb.print(F("  THE   LEADER"));
         }
         gb.setCursor(SCREEN_WIDTH/2-2*6, SCREEN_HEIGHT/2);
         gb.println(F("BACK"));
         if( meta_mode == WORLD ){
           gb.setCursor(SCREEN_WIDTH/2-2*6, gb.getCursorY());
           gb.print(F("SAVE"));
+        }else{ //We are in a dungeon
+          //Print the floor of the dungeon the player is on
+          gb.setCursor(SCREEN_WIDTH/2-7*6, SCREEN_HEIGHT-16);
+          gb.print(F("FLOOR "));
+          if( dungeon_level < 9 ) gb.print(0);
+          gb.print( dungeon_level + 1 );
+          gb.print(F(" OF "));
+          if( pgm_read_byte(&(dungeons[dungeonid].size)) < 10 ) gb.print(0);
+          gb.print( pgm_read_byte(&(dungeons[dungeonid].size)) );
         }
         gb.setCursor(SCREEN_WIDTH/2-3*6, SCREEN_HEIGHT/2);
         if(menu_selection == 1){
@@ -244,12 +255,12 @@ void loop() {
         }
         break;
       case YOU_WIN:
-        gb.setCursor(SCREEN_WIDTH/2-3*6, gb.getCursorY());
+        gb.setCursor(SCREEN_WIDTH/2-3*6-3, gb.getCursorY());
         gb.print(F("YOU WIN"));
         print_progress();
     }
 
-    if(mode != COMBAT && mode < TO_WORLD && gb.justPressed(B_BUTTON)){ // Was C button for Gamebuino, but A and B aren't used outside battles
+    if( (mode == WORLD || mode == DUNGEON) && gb.justPressed(B_BUTTON) ){ // Was C button for Gamebuino, but A and B aren't used outside battles
       menu_selection = 0;
       meta_mode = mode;
       mode = PAUSE_MENU;
