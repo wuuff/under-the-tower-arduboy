@@ -29,6 +29,9 @@ extern uint16_t dudey;
 
 extern int8_t transition;
 
+//For main menu graphics
+extern const byte tiles[];
+
 /*extern const byte dude[];
 extern const byte dudedn1[];
 extern const byte dudedn2[];

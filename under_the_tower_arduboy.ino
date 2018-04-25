@@ -146,20 +146,39 @@ void loop() {
         step_dialogue();
         break;
       case MAIN_MENU:
-        gb.setCursor(SCREEN_WIDTH/2-7*6, gb.getCursorY());
-        gb.print(F("UNDER THE TOWER"));
-        gb.setCursor(SCREEN_WIDTH/2-2*6, SCREEN_HEIGHT/2);
+        // Draw tower on right
+        for( uint8_t i = 0; i < 8; i++ ){
+          uint8_t tile = 38;
+          for( uint8_t j = 0; j < 5; j++ ){
+            // Draw windows every other row at 5th position
+            if( j == 4 && i % 2 == 1 ){
+              tile = 11;
+            }
+            // If we are no longer drawing the curved wall, draw normal wall
+            else if( j > 2 ){
+              tile = 27;
+            }
+            gb.drawSlowXYBitmap( SCREEN_WIDTH - 5*8 + j*8, i*8, &tiles[tile*8], 8, 8 );
+          }
+        }
+        //Make background behind text black
+        gb.fillRect(0,0,128 - 5*8,64);
+        gb.setTextColor(BLACK);
+        gb.setTextBackground(WHITE);
+        gb.setCursor(6, 0);
+        gb.print(F("UNDER\n      THE\n         TOWER"));
+        gb.setCursor(2*6, SCREEN_HEIGHT/2);
         gb.println(F("NEW"));
-        gb.setCursor(SCREEN_WIDTH/2-2*6, gb.getCursorY());
+        gb.setCursor(2*6, gb.getCursorY());
         gb.println(F("LOAD"));
-        gb.setCursor(SCREEN_WIDTH/2-2*6, gb.getCursorY());
+        gb.setCursor(2*6, gb.getCursorY());
         gb.print(F("QUIT"));
-        gb.setCursor(SCREEN_WIDTH/2-3*6, SCREEN_HEIGHT/2);
+        gb.setCursor(1*6, SCREEN_HEIGHT/2);
         if(menu_selection == 1){
-          gb.setCursor(SCREEN_WIDTH/2-3*6, SCREEN_HEIGHT/2+8);        
+          gb.setCursor(1*6, SCREEN_HEIGHT/2+8);        
         }
         if(menu_selection == 2){
-          gb.setCursor(SCREEN_WIDTH/2-3*6, gb.getCursorY()+16);         
+          gb.setCursor(1*6, SCREEN_HEIGHT/2+16);         
         }
         gb.print(F("\20"));
         if(gb.justPressed(UP_BUTTON)){

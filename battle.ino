@@ -767,6 +767,10 @@ void do_combat(){
     nurse_protect_bonus = -1;
     do_combat_step();
   }
+
+  // Draw background rectangles on top and bottom of screen
+  gb.fillRect(0,0,SCREEN_WIDTH,8);
+  gb.fillRect(0,SCREEN_HEIGHT/2-1,SCREEN_WIDTH,SCREEN_HEIGHT/2+1);
   
   //Get enemy type
   //graphics hardcoded for now
@@ -777,18 +781,24 @@ void do_combat(){
     copy_to_buffer(enemy_buffer[0].nme,enemy_names);
     gb.print(combat_buffer);
     gb.drawSlowXYBitmap(SCREEN_WIDTH/4-4,SCREEN_HEIGHT/8,&enemybmps[enemy_buffer[0].img*16],8,16);
+    gb.drawRect(SCREEN_WIDTH/4-4-4, SCREEN_HEIGHT/8 + 18, 16, 3);
+    gb.drawFastHLine(SCREEN_WIDTH/4-4-4, SCREEN_HEIGHT/8 + 19, (16*enemy_health[0])/(enemy_buffer[0].lvl*10) );
   }
   if(enemy_buffer[1].lvl != -1){
     gb.setCursor(SCREEN_WIDTH/2-(3*6)-3, 0);
     copy_to_buffer(enemy_buffer[1].nme,enemy_names);
     gb.print(combat_buffer);
     gb.drawSlowXYBitmap(SCREEN_WIDTH/2-4,SCREEN_HEIGHT/8,&enemybmps[enemy_buffer[1].img*16],8,16);
+    gb.drawRect(SCREEN_WIDTH/2-4-4, SCREEN_HEIGHT/8 + 18, 16, 3);
+    gb.drawFastHLine(SCREEN_WIDTH/2-4-4, SCREEN_HEIGHT/8 + 19, (16*enemy_health[1])/(enemy_buffer[1].lvl*10) );
   }
   if(enemy_buffer[2].lvl != -1){
     gb.setCursor(SCREEN_WIDTH-(7*6), 0);
     copy_to_buffer(enemy_buffer[2].nme,enemy_names);
     gb.print(combat_buffer);
     gb.drawSlowXYBitmap(SCREEN_WIDTH/4*3-4,SCREEN_HEIGHT/8,&enemybmps[enemy_buffer[2].img*16],8,16);
+    gb.drawRect(SCREEN_WIDTH/4*3-4-4, SCREEN_HEIGHT/8 + 18, 16, 3);
+    gb.drawFastHLine(SCREEN_WIDTH/4*3-4-4, SCREEN_HEIGHT/8 + 19, (16*enemy_health[2])/(enemy_buffer[2].lvl*10) );
   }
 
   //If a message is displayed (dismissing the message steps combat forward)
@@ -846,8 +856,8 @@ void do_combat(){
   else if( (combat_mode >= MUDLARK && combat_mode <= NURSE) || combat_mode == POSTCOMBAT ){
 
     if( combat_mode >= MUDLARK && combat_mode <= NURSE ){
-      gb.drawRect(SCREEN_WIDTH/2, SCREEN_HEIGHT/2+1, SCREEN_WIDTH/2-2, 3);
-      gb.drawLine(SCREEN_WIDTH/2, SCREEN_HEIGHT/2+2, SCREEN_WIDTH/2+((SCREEN_WIDTH/2-4)*party[combat_mode].health)/(party[combat_mode].level*20), SCREEN_HEIGHT/2+2);
+      gb.drawRect(SCREEN_WIDTH/2, SCREEN_HEIGHT/2+1, SCREEN_WIDTH/2-2, 3, BLACK);
+      gb.drawLine(SCREEN_WIDTH/2, SCREEN_HEIGHT/2+2, SCREEN_WIDTH/2+((SCREEN_WIDTH/2-4)*party[combat_mode].health)/(party[combat_mode].level*20), SCREEN_HEIGHT/2+2,BLACK);
 
       gb.setCursor(SCREEN_WIDTH-(8*6+1), SCREEN_HEIGHT/2+6);
       copy_to_buffer(combat_mode,player_names);
@@ -1173,7 +1183,7 @@ void do_combat(){
     gb.display.print((char)(enemies[i]+'1'));
   }*/
 
-  gb.drawRect(0,SCREEN_HEIGHT/2-1,SCREEN_WIDTH,SCREEN_HEIGHT/2+1);
+  //gb.drawRect(0,SCREEN_HEIGHT/2-1,SCREEN_WIDTH,SCREEN_HEIGHT/2+1);
   
   
 }
