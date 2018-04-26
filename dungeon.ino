@@ -283,30 +283,30 @@ byte test_collision(byte dir){
 
   //Prioritize exit tiles over other tiles
   if( dir == UP ){
-    tile = dungeon_map[(dudey-1)/8][(dudex)/8];
-    if( tile != DUN_TILE_DOOR && tile != DUN_TILE_STAIRSUP && tile != DUN_TILE_STAIRSDN && dungeon_map[(dudey-1)/8][(dudex+7)/8] ){
-      return dungeon_map[(dudey-1)/8][(dudex+7)/8];
+    tile = dungeon_map[(dudey-0)/8][(dudex+1)/8];
+    if( tile != DUN_TILE_DOOR && tile != DUN_TILE_STAIRSUP && tile != DUN_TILE_STAIRSDN && dungeon_map[(dudey-0)/8][(dudex+6)/8] ){
+      return dungeon_map[(dudey-0)/8][(dudex+6)/8];
     }else{
       return tile;
     }
   }else if( dir == DOWN ){
-    tile = dungeon_map[(dudey+8)/8][(dudex)/8];
-    if( tile != DUN_TILE_DOOR && tile != DUN_TILE_STAIRSUP && tile != DUN_TILE_STAIRSDN && dungeon_map[(dudey+8)/8][(dudex+7)/8] ){
-      return dungeon_map[(dudey+8)/8][(dudex+7)/8];
+    tile = dungeon_map[(dudey+7)/8][(dudex+1)/8];
+    if( tile != DUN_TILE_DOOR && tile != DUN_TILE_STAIRSUP && tile != DUN_TILE_STAIRSDN && dungeon_map[(dudey+7)/8][(dudex+6)/8] ){
+      return dungeon_map[(dudey+7)/8][(dudex+6)/8];
     }else{
       return tile;
     }
   }else if( dir == LEFT ){
-    tile = dungeon_map[(dudey)/8][(dudex-1)/8];
-    if( tile != DUN_TILE_DOOR && tile != DUN_TILE_STAIRSUP && tile != DUN_TILE_STAIRSDN && dungeon_map[(dudey+7)/8][(dudex-1)/8] ){
-      return dungeon_map[(dudey+7)/8][(dudex-1)/8];
+    tile = dungeon_map[(dudey+1)/8][(dudex-0)/8];
+    if( tile != DUN_TILE_DOOR && tile != DUN_TILE_STAIRSUP && tile != DUN_TILE_STAIRSDN && dungeon_map[(dudey+6)/8][(dudex-0)/8] ){
+      return dungeon_map[(dudey+6)/8][(dudex-0)/8];
     }else{
       return tile;
     }
   }else{
-    tile = dungeon_map[(dudey)/8][(dudex+8)/8];
-    if( tile != DUN_TILE_DOOR && tile != DUN_TILE_STAIRSUP && tile != DUN_TILE_STAIRSDN && dungeon_map[(dudey+7)/8][(dudex+8)/8] ){
-      return dungeon_map[(dudey+7)/8][(dudex+8)/8];
+    tile = dungeon_map[(dudey+1)/8][(dudex+7)/8];
+    if( tile != DUN_TILE_DOOR && tile != DUN_TILE_STAIRSUP && tile != DUN_TILE_STAIRSDN && dungeon_map[(dudey+6)/8][(dudex-7)/8] ){
+      return dungeon_map[(dudey+6)/8][(dudex+7)/8];
     }else{
       return tile;
     }

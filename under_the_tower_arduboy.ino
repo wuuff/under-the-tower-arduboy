@@ -167,42 +167,34 @@ void loop() {
         gb.setTextBackground(WHITE);
         gb.setCursor(6, 0);
         gb.print(F("UNDER\n      THE\n         TOWER"));
-        gb.setCursor(2*6, SCREEN_HEIGHT/2);
+        gb.setCursor(2*6, SCREEN_HEIGHT/2+8);
         gb.println(F("NEW"));
         gb.setCursor(2*6, gb.getCursorY());
         gb.println(F("LOAD"));
-        gb.setCursor(2*6, gb.getCursorY());
-        gb.print(F("QUIT"));
-        gb.setCursor(1*6, SCREEN_HEIGHT/2);
+        gb.setCursor(1*6, SCREEN_HEIGHT/2+8);
         if(menu_selection == 1){
-          gb.setCursor(1*6, SCREEN_HEIGHT/2+8);        
-        }
-        if(menu_selection == 2){
-          gb.setCursor(1*6, SCREEN_HEIGHT/2+16);         
+          gb.setCursor(1*6, SCREEN_HEIGHT/2+16);        
         }
         gb.print(F("\20"));
         if(gb.justPressed(UP_BUTTON)){
           menu_selection--;
-          if( menu_selection == 255 ) menu_selection = 2;
+          if( menu_selection == 255 ) menu_selection = 1;
         }
         else if(gb.justPressed(DOWN_BUTTON)){
           menu_selection++;
-          menu_selection%=3;
+          menu_selection%=2;
         }
         else if(gb.justPressed(A_BUTTON)){
           gb.initRandomSeed();//For random numbers, later
           if(menu_selection == 1){
             restore_game();
-          }
-          else if(menu_selection == 2){
-            //gb.exitToBootloader(); // Isn't found?
-          }
-          else{
+          }else{
             mode = WORLD;
           }
         }
         break;
       case PAUSE_MENU:
+        gb.fillRect(0,0,128,64);
         gb.setCursor(SCREEN_WIDTH/2-3*6, gb.getCursorY());
         gb.println(F("PAUSED"));
         gb.setCursor(1*6, gb.getCursorY());
@@ -265,6 +257,7 @@ void loop() {
         }
         break;
       case GAME_OVER:
+        gb.fillRect(0,0,128,64);
         gb.setCursor(SCREEN_WIDTH/2-4*6, gb.getCursorY());
         gb.print(F("GAME OVER"));
         gb.setCursor(SCREEN_WIDTH/2-3*6, SCREEN_HEIGHT/2);
@@ -274,6 +267,7 @@ void loop() {
         }
         break;
       case YOU_WIN:
+        gb.fillRect(0,0,128,64);
         gb.setCursor(SCREEN_WIDTH/2-3*6-3, gb.getCursorY());
         gb.print(F("YOU WIN"));
         print_progress();

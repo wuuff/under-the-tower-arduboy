@@ -785,20 +785,20 @@ void draw_world(){
 uint8_t test_world_collision(uint8_t dir){
   uint8_t tile = 0;
   if( dir == UP ){
-    tile = world_get(((dudey-1)/8)*64+dudex/8);
-    if( tile != DOOR && world_get(((dudey-1)/8)*64+(dudex+7)/8) )
-      return world_get(((dudey-1)/8)*64+(dudex+7)/8);
+    tile = world_get(((dudey-0)/8)*64+(dudex+1)/8);
+    if( tile != DOOR && world_get(((dudey-0)/8)*64+(dudex+6)/8) )
+      return world_get(((dudey-0)/8)*64+(dudex+6)/8);
     else
       return tile;
   }else if( dir == DOWN ){
-    return world_get(((dudey+8)/8)*64+dudex/8) ||
-      world_get(((dudey+8)/8)*64+(dudex+7)/8) != 0;
+    return world_get(((dudey+7)/8)*64+(dudex+1)/8) ||
+      world_get(((dudey+7)/8)*64+(dudex+6)/8) != 0;
   }else if( dir == LEFT ){
-    return world_get(((dudey)/8)*64+(dudex-1)/8) != 0 ||
-      world_get(((dudey+7)/8)*64+(dudex-1)/8) != 0;
+    return world_get(((dudey+1)/8)*64+(dudex-0)/8) != 0 ||
+      world_get(((dudey+6)/8)*64+(dudex-0)/8) != 0;
   }else{
-    return world_get(((dudey)/8)*64+(dudex+8)/8) != 0 ||
-      world_get(((dudey+7)/8)*64+(dudex+8)/8) != 0;
+    return world_get(((dudey+1)/8)*64+(dudex+7)/8) != 0 ||
+      world_get(((dudey+6)/8)*64+(dudex+7)/8) != 0;
   }
 }
 

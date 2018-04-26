@@ -128,6 +128,9 @@ void step_dialogue(){
   //gb.display.setColor(WHITE);
   gb.fillRect(0,SCREEN_HEIGHT/2-1,SCREEN_WIDTH,SCREEN_HEIGHT/2+1, BLACK);
 
+  gb.setTextColor(WHITE);
+  gb.setTextBackground(BLACK);
+
   gb.setCursor(1, SCREEN_HEIGHT/2);
   //If the first char is a zero, then no character is speaking, so skip this
   //so that narration gets four lines to work with
@@ -136,6 +139,9 @@ void step_dialogue(){
   }
   gb.setCursor(6, gb.getCursorY());
   gb.print(combat_message);
+
+  gb.setTextColor(BLACK);
+  gb.setTextBackground(WHITE);
 
   //gb.display.setColor(BLACK);
   gb.drawRect(0,SCREEN_HEIGHT/2-1,SCREEN_WIDTH,SCREEN_HEIGHT/2+1);
