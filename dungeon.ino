@@ -305,7 +305,7 @@ byte test_collision(byte dir){
     }
   }else{
     tile = dungeon_map[(dudey+1)/8][(dudex+7)/8];
-    if( tile != DUN_TILE_DOOR && tile != DUN_TILE_STAIRSUP && tile != DUN_TILE_STAIRSDN && dungeon_map[(dudey+6)/8][(dudex-7)/8] ){
+    if( tile != DUN_TILE_DOOR && tile != DUN_TILE_STAIRSUP && tile != DUN_TILE_STAIRSDN && dungeon_map[(dudey+6)/8][(dudex+7)/8] ){
       return dungeon_map[(dudey+6)/8][(dudex+7)/8];
     }else{
       return tile;

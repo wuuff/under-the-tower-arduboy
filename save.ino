@@ -30,8 +30,8 @@ void save_game(){
   }
   base = SAVE_BASE + 7 + 12 + INVENTORY_SIZE;
   //Save player coords
-  EEPROM.update(base++,dudex/8);
-  EEPROM.update(base,dudey/8);
+  EEPROM.update(base++,(dudex+2)/8);
+  EEPROM.update(base,(dudey+2)/8);
 }
 
 void restore_game(){
